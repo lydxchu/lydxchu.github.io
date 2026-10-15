@@ -1,0 +1,474 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Essay Desktop</title>
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #222;
+  background: #202c3b;
+}
+
+.desktop {
+  min-height: 100vh;
+  padding: 26px;
+  padding-bottom: 55px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 100px);
+  grid-auto-rows: 112px;
+  gap: 12px;
+  align-content: start;
+  background:
+    radial-gradient(ellipse at 70% 15%, #46576b 0, transparent 48%),
+    linear-gradient(135deg, #26394c, #17212e);
+}
+
+.file {
+  border: 0;
+  color: white;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 3px;
+  border-radius: 7px;
+  min-width: 0;
+}
+
+.file:hover, .file:focus-visible {
+  background: #ffffff24;
+  outline: 1px solid #ffffff70;
+}
+
+.file-icon {
+  font-size: 38px;
+  filter: drop-shadow(0 3px 3px #0005);
+}
+
+.filename {
+  font-size: 12px;
+  line-height: 1.3;
+  text-align: center;
+  overflow-wrap: anywhere;
+  text-shadow: 0 1px 3px #000;
+}
+
+.taskbar {
+  height: 42px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #111a25eF;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  font-size: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.window {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(700px, 92vw);
+  max-height: 78vh;
+  display: none;
+  flex-direction: column;
+  background: #f5f5f5;
+  color: #222;
+  border-radius: 8px;
+  box-shadow: 0 18px 70px #0008;
+  overflow: hidden;
+}
+
+.titlebar {
+  background: #e7e7e7;
+  padding: 12px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  font-size: 13px;
+}
+
+.close {
+  border: 0;
+  background: #d5d5d5;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 4px 9px;
+}
+
+.content {
+  padding: 25px;
+  overflow: auto;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.content h2 { font-size: 19px; }
+.content h3 { font-size: 15px; }
+.content p { margin: 0 0 15px; }
+
+.paper {
+  background: white;
+  font-family: Georgia, serif;
+  line-height: 1.8;
+}
+
+.mono {
+  font-family: monospace;
+  letter-spacing: 2px;
+  line-height: 2;
+  overflow-wrap: anywhere;
+}
+
+.hint {
+  color: #777;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.blur {
+  filter: blur(5px);
+  cursor: pointer;
+  transition: filter .25s;
+}
+
+.blur:hover, .blur:focus { filter: none; }
+
+.invisible {
+  color: white;
+  background: white;
+  cursor: text;
+  user-select: text;
+}
+
+.invisible::selection {
+  color: white;
+  background: #345d9d;
+}
+
+.image-simulation {
+  background: #fff;
+  padding: 35px 15px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.image-simulation .hidden-message {
+  color: #fff;
+  transition: color .3s;
+  cursor: pointer;
+}
+
+.image-simulation:hover .hidden-message {
+  color: #333;
+}
+
+textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 10px;
+  font-family: monospace;
+}
+
+button.action {
+  cursor: pointer;
+  padding: 8px 12px;
+  border: 1px solid #bbb;
+  background: #eee;
+  border-radius: 4px;
+}
+
+.status { color: #55715b; font-size: 12px; }
+
+@media (max-width: 500px) {
+  .desktop {
+    padding: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .content { padding: 18px; }
+}
+</style>
+</head>
+
+<body>
+<div class="desktop">
+
+  <button class="file" onclick="openFile('intro')">
+    <span class="file-icon">📄</span>
+    <span class="filename">intro.txt</span>
+  </button>
+
+  <button class="file" onclick="openFile('draft')">
+    <span class="file-icon">📝</span>
+    <span class="filename">essay_draft.docx</span>
+  </button>
+
+  <button class="file" onclick="openFile('agency')">
+    <span class="file-icon">📃</span>
+    <span class="filename">player_agency.txt</span>
+  </button>
+
+  <button class="file" onclick="openFile('morse')">
+    <span class="file-icon">📄</span>
+    <span class="filename">agency_morse.txt</span>
+  </button>
+
+  <button class="file" onclick="openFile('circle')">
+    <span class="file-icon">🖼️</span>
+    <span class="filename">magic_circle.png</span>
+  </button>
+
+  <button class="file" onclick="openFile('eggs')">
+    <span class="file-icon">🖼️</span>
+    <span class="filename">easter_eggs.png</span>
+  </button>
+
+  <button class="file" onclick="openFile('boundary')">
+    <span class="file-icon">🎞️</span>
+    <span class="filename">play_boundary.mov</span>
+  </button>
+
+  <button class="file" onclick="openFile('hidden')">
+    <span class="file-icon">🎵</span>
+    <span class="filename">hidden_message.wav</span>
+  </button>
+
+  <button class="file" onclick="openFile('notes')">
+    <span class="file-icon">📁</span>
+    <span class="filename">research_notes.txt</span>
+  </button>
+
+  <button class="file" onclick="openFile('conclusion')">
+    <span class="file-icon">📄</span>
+    <span class="filename">conclusion.txt</span>
+  </button>
+
+  <button class="file" onclick="openFile('missing')">
+    <span class="file-icon">📄</span>
+    <span class="filename">paragraph_09.docx</span>
+  </button>
+
+  <button class="file" onclick="openFile('references')">
+    <span class="file-icon">📚</span>
+    <span class="filename">works_cited.docx</span>
+  </button>
+
+</div>
+
+<div class="taskbar">
+  <span>▦ &nbsp; ESSAY_DESKTOP</span>
+  <span id="clock">LOCAL FILE SYSTEM</span>
+</div>
+
+<div class="window" id="window">
+  <div class="titlebar">
+    <span id="windowTitle">File</span>
+    <button class="close" onclick="closeFile()">✕</button>
+  </div>
+  <div class="content" id="windowContent"></div>
+</div>
+
+<script>
+const files = {
+  intro: {
+    title: "intro.txt",
+    html: `
+      <h2>The Game Outside the Game</h2>
+      <p>Normally, there is a distinction between the space in which a game is supposed to operate and the world outside it. Players are expected to interact with a game through its established boundaries, such as a set interface.</p>
+      <p>However, in games such as <i>Doki Doki Literature Club</i> (DDLC), a psychological horror visual novel that initially presents itself as a dating simulation, this boundary can become blurred.</p>
+      <p>As the story progresses, the game begins to break the fourth wall. Certain characters address the player directly, acknowledging their presence beyond the fictional world.</p>
+      <p>These actions raise a question: <b>when a game encourages players to interact with things outside its normal interface, where does the game actually end?</b></p>
+      <p class="hint">There is more to this draft than this file contains.</p>
+    `
+  },
+
+  draft: {
+    title: "essay_draft.docx",
+    html: `
+      <div class="paper">
+        <h2>The Game Outside the Game</h2>
+        <p>In a conventional video game, players are generally expected to interact with the game through its interface and use the available mechanics to progress. However, the experience of a game depends not only on its mechanics but also on how players engage with them.</p>
+        <p>Nguyen emphasizes this active role of the player. He states that games require “the active, practically engaged participation of the audience,” emphasizing that players help construct the experience through their actions and choices.</p>
+        <p>Deleting Monika's character file is one example. During the game's final act, Monika becomes aware of the player's presence. To progress beyond this scene, the player must delete her file through the computer's file system rather than the game's normal interface.</p>
+        <p class="hint">[The next paragraph could not be recovered.]</p>
+      </div>
+    `
+  },
+
+  agency: {
+    title: "player_agency.txt",
+    html: `
+      <h2>Player Agency</h2>
+      <p>Nguyen argues that game designers use the “medium of agency” to shape experiences by structuring the actions players can perform.</p>
+      <p>In DDLC, the player must recognize that deleting Monika's file is a possibility and choose to act on it, even though the action takes place outside the game's normal interface.</p>
+      <p>This makes the player's own actions essential to how the story progresses. The player is not simply watching events unfold; they must discover a possibility and decide whether to act on it.</p>
+      <p class="hint">This file appears to be a duplicate of a paragraph in the draft.</p>
+      <p class="blur" tabindex="0">The distinction between playing and using the computer becomes harder to maintain when the game makes an external action necessary.</p>
+    `
+  },
+
+  morse: {
+    title: "agency_morse.txt",
+    html: `
+      <h2>Untranslated note</h2>
+      <p class="hint">A fragment found in the research folder. Spaces separate letters; / separates words.</p>
+      <div class="mono">.-- .... . .-. . / -.. --- . ... / - .... . / --. .- -- . / . -. -.. ..--..</div>
+      <hr>
+      <p>Translation field:</p>
+      <textarea id="translation" placeholder="Decode the message yourself..."></textarea>
+      <button class="action" onclick="checkMorse()">Submit translation</button>
+      <p id="morseResult" class="status"></p>
+    `
+  },
+
+  circle: {
+    title: "magic_circle.png",
+    html: `
+      <h2>Image preview</h2>
+      <div class="image-simulation">
+        <div style="font-size:52px">◯</div>
+        <p>A boundary is visible. Its limits are not.</p>
+        <p class="hidden-message">Huizinga describes play as distinct from ordinary life in both locality and duration.</p>
+      </div>
+      <p class="hint">Image metadata: hover over the image to reveal the faded caption.</p>
+      <p>In <i>Homo Ludens</i>, Huizinga describes play as “distinct from ‘ordinary’ life both as to locality and duration.” This helps explain why actions outside the game interface matter: DDLC makes an ordinary computer function part of the playing experience.</p>
+    `
+  },
+
+  eggs: {
+    title: "easter_eggs.png",
+    html: `
+      <h2>Image data recovered</h2>
+      <p>Some information is not visible during ordinary gameplay.</p>
+      <p>In DDLC, the character files contain hidden material that players can examine using other programs. These files reveal messages and connections that would not be discovered simply by reading the game's dialogue.</p>
+      <div class="image-simulation">
+        <p>IMAGE PREVIEW — COLOR CHANNELS</p>
+        <p class="hidden-message">The player must investigate to find what the interface does not show.</p>
+      </div>
+      <p>Other files, such as <code>CAN YOU HEAR ME.txt</code> and <code>hxppy thxughts.png</code>, encourage players to investigate information that is not directly presented through the interface.</p>
+    `
+  },
+
+  boundary: {
+    title: "play_boundary.mov",
+    html: `
+      <h2>Transcript — recovered media</h2>
+      <p class="hint">The video could not be played. An automatic transcript was recovered instead.</p>
+      <p>[00:00] A game is opened.</p>
+      <p>[00:07] The player reads the dialogue.</p>
+      <p>[00:15] The game asks for an action.</p>
+      <p>[00:21] The action cannot be completed through the game's interface.</p>
+      <p>[00:28] The player opens the computer's file system.</p>
+      <p>[00:36] <span class="blur" tabindex="0">The computer itself becomes part of the experience the game has designed.</span></p>
+      <hr>
+      <p>Huizinga's concept of the magic circle raises a question: if the player must leave the game's normal interface, are they still within the space of play, or have they entered ordinary life?</p>
+    `
+  },
+
+  hidden: {
+    title: "hidden_message.wav",
+    html: `
+      <h2>Audio transcription</h2>
+      <p class="hint">The audio is silent. A partial transcript was embedded in the file.</p>
+      <div class="mono">PLAY / ORDINARY LIFE / BOUNDARY / PLAYER</div>
+      <p>Unlike deleting Monika's file, which directly affects progression, investigating hidden files is optional.</p>
+      <p>Some players may view these discoveries as puzzles within the game, while others may see them as separate activities.</p>
+      <p class="invisible" tabindex="0">The boundaries of play depend not only on where an activity takes place but also on how players understand and engage with it.</p>
+      <p class="hint">Select the blank line above to reveal the hidden text.</p>
+    `
+  },
+
+  notes: {
+    title: "research_notes.txt",
+    html: `
+      <h2>Research notes</h2>
+      <p><b>Huizinga:</b> play is distinguished from ordinary life by its boundaries.</p>
+      <p><b>Nguyen:</b> the player's actions help construct the experience.</p>
+      <hr>
+      <p>Unlike deleting Monika's character file, examining hidden files is not always necessary to finish the game. Players may investigate because they suspect the files contain additional information about the story.</p>
+      <p>When a player searches for hidden messages or decodes an image, they pursue a goal the game does not necessarily explain through explicit instructions.</p>
+      <p class="hint">Note: this section may belong somewhere else in the essay.</p>
+    `
+  },
+
+  conclusion: {
+    title: "conclusion.txt",
+    html: `
+      <h2>Conclusion</h2>
+      <p>Ultimately, DDLC challenges the assumption that games have clear boundaries separating play from ordinary life.</p>
+      <p>Its hidden files and file-manipulation mechanics show how activities beyond a game's normal interface can become meaningful parts of the experience when they connect to its design and narrative.</p>
+      <p>DDLC's most interesting feature is therefore not simply that it encourages players to go beyond the normal interface, but that it makes them question where the boundaries of play are drawn and whether the game can remain separate from the world in which it is played.</p>
+    `
+  },
+
+  missing: {
+    title: "paragraph_09.docx",
+    html: `
+      <h2>Recovered paragraph — incomplete</h2>
+      <p>Someone might argue that because the developers intentionally designed DDLC to involve file manipulation and hidden files, these actions are simply unconventional game mechanics rather than activities outside the game.</p>
+      <p>From this perspective, the player is not leaving the experience of the game but discovering how the game works.</p>
+      <p class="invisible" tabindex="0">However, the fact that these discoveries were intentional does not eliminate the tension they create. Players initially expect the game to operate within its interface, yet progressing through the story or uncovering hidden information requires them to enter their ordinary computer environment.</p>
+      <p class="hint">The final lines are present but not immediately visible. Select the blank text to reveal them.</p>
+    `
+  },
+
+  references: {
+    title: "works_cited.docx",
+    html: `
+      <h2>Works Cited</h2>
+      <p>Huizinga, Johan. <i>Homo Ludens: A Study of the Play-Element in Culture.</i> Kettering, OH: Angelico Press, 2016.</p>
+      <p>Nguyen, C. Thi. <i>Games: Agency as Art.</i> New York: Oxford University Press, 2020.</p>
+      <hr>
+      <p class="hint">The references are visible. The argument is scattered.</p>
+    `
+  }
+};
+
+function openFile(id) {
+  const file = files[id];
+  if (!file) return;
+  document.getElementById("windowTitle").textContent = file.title;
+  document.getElementById("windowContent").innerHTML = file.html;
+  document.getElementById("window").style.display = "flex";
+}
+
+function closeFile() {
+  document.getElementById("window").style.display = "none";
+}
+
+function checkMorse() {
+  const answer = document.getElementById("translation").value
+    .toLowerCase().trim().replace(/[.!?]/g, "").replace(/\s+/g, " ");
+  const result = document.getElementById("morseResult");
+  if (answer === "where does the game end") {
+    result.textContent = "Translation accepted. The question is the point.";
+  } else {
+    result.textContent = "No match. Check the dots, dashes, and word separators.";
+  }
+}
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeFile();
+});
+
+document.getElementById("clock").textContent =
+  new Date().toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"});
+</script>
+</body>
+</html>
